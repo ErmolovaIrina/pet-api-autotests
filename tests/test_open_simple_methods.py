@@ -44,12 +44,36 @@ class TestSimpleMethod():
         response = init_http_session.post("/api/check_type")
         Assertions.assert_code_status(response, 200)
 
-# get_json
+  # /api/get_json
 
     @allure.title("Check get_json")
     def test_get_json(self, init_http_session,init_logger, init_config, init_util):
-        response = init_http_session.get("api/get_json")
+        response = init_http_session.get("/api/get_json")
         Assertions.assert_code_status(response, 200)
         keys = ["name", "fname"]
         Assertions.assert_json_has_keys(response, keys)
+
+  # /api/post_only
+
+    @allure.title("Only post case")
+    def test_only_post(self, init_http_session,init_logger, init_config, init_util):
+        response = init_http_session.post("/api/method_post_only")
+
+        Assertions.assert_code_status(response, 200)
+
+
+    @allure.title("Not post method")
+    def test_only_post_with_get(self, init_http_session, init_logger, init_config, init_util):
+        response = init_http_session.get("/api/method_post_only")
+
+        Assertions.assert_code_status(response, 404)
+
+  # /api/show_all_headers
+
+    @allure.title("Show all headers")
+    def test_all_headers(self, init_http_session,init_logger, init_config, init_util):
+        response = init_http_session.get("/api/show_all_headers")
+
+        Assertions.assert_code_status(response, 200)
+        Assertions.assert_json_has_key(response, "result")
 
